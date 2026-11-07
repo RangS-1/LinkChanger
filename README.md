@@ -26,6 +26,18 @@ For example, preview the changes without writing to files:
 python src/linkchanger/main.py yourname.vercel.app yourname.com --folder ./website --dry-run
 ```
 
+Add `--scan` to count canonical tags, Open Graph image tags, and URLs in the selected folder after processing:
+
+```bash
+python src/linkchanger/main.py yourname.vercel.app yourname.com --folder ./website --scan --dry-run
+```
+
+To scan without changing URLs, omit both domains:
+
+```bash
+python src/linkchanger/main.py --folder ./website --scan
+```
+
 If the results look correct, run it again without `--dry-run` to apply the changes:
 
 ```bash
@@ -39,6 +51,7 @@ python src/linkchanger/main.py yourname.vercel.app yourname.com --folder ./websi
 | `old-domain` | The domain to search for, such as `yourname.vercel.app`. |
 | `new-domain` | The replacement domain, such as `yourname.com`. |
 | `--folder` | The folder to search. Defaults to the current working directory (`.`). |
+| `--scan` | Scan the selected folder and report canonical tags, Open Graph image tags, and total URLs. Can be used without domain arguments. |
 | `--dry-run` | Show which files and how many URLs would change without writing changes to files. |
 
 Domains may include an `http://` or `https://` prefix, a `www.` prefix, and a trailing slash; these are removed before searching. Matching URLs are rewritten to use `https://` and the new domain.
