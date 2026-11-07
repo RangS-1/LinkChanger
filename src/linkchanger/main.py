@@ -57,7 +57,7 @@ def main():
             with open(path, "w", encoding="utf-8", newline="") as f:
                 f.write(add_new)
 
-    print(f"\nSelesai: {total_changed} URL di {total_file} file.")
+    print(f"\nDone: {total_changed} URL in {total_file} file.")
     if args.dry_run:
         print("Changes not written to files (dry run). Remove --dry-run to apply changes.")
 
