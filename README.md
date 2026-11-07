@@ -2,11 +2,15 @@
 
 LinkChanger is a simple Python script that replaces URLs using an old domain with URLs using a new domain. It can be useful when migrating a website from a temporary hosting domain to your own domain.
 
-## Requirements
+## Downloads
 
-- Python 3
+The script is available for download on arch user repository (AUR) as `linkchanger`. You can install it using an AUR helper like `yay`:
 
-The script uses only the Python standard library, so no additional dependencies are required.
+```bash
+yay -S linkchanger
+# or
+paru -S linkchanger
+```
 
 ## Usage
 
