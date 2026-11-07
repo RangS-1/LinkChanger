@@ -1,0 +1,46 @@
+# LinkChanger
+
+LinkChanger is a simple Python script that replaces URLs using an old domain with URLs using a new domain. It can be useful when migrating a website from a temporary hosting domain to your own domain.
+
+## Requirements
+
+- Python 3
+
+The script uses only the Python standard library, so no additional dependencies are required.
+
+## Usage
+
+Run the script from the project directory:
+
+```bash
+python src/linkchanger/main.py <old-domain> <new-domain> [options]
+```
+
+For example, preview the changes without writing to files:
+
+```bash
+python src/linkchanger/main.py yourname.vercel.app yourname.com --folder ./website --dry-run
+```
+
+If the results look correct, run it again without `--dry-run` to apply the changes:
+
+```bash
+python src/linkchanger/main.py yourname.vercel.app yourname.com --folder ./website
+```
+
+### Arguments and options
+
+| Argument/option | Description |
+| --- | --- |
+| `old-domain` | The domain to search for, such as `yourname.vercel.app`. |
+| `new-domain` | The replacement domain, such as `yourname.com`. |
+| `--folder` | The folder to search. Defaults to the current working directory (`.`). |
+| `--dry-run` | Show which files and how many URLs would change without writing changes to files. |
+
+Domains may include an `http://` or `https://` prefix, a `www.` prefix, and a trailing slash; these are removed before searching. Matching URLs are rewritten to use `https://` and the new domain.
+
+## Files processed
+
+The script recursively searches files with the `.html`, `.htm`, `.xml`, and `.txt` extensions (extension matching is case-insensitive). Directories named `.git`, `node_modules`, and `.vercel` are skipped. Files that cannot be read as UTF-8 are also skipped and reported.
+
+When finished, the script prints the number of URLs replaced and the number of files changed. A file is written only if at least one URL matches; run with `--dry-run` first to review the scope of the changes.
