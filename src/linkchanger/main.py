@@ -12,12 +12,35 @@ def clear_domain(domain: str) -> str:
     domain = re.sub(r"^www\.", "", domain, flags=re.I)
     return domain
 
+def scan_folder():
+    canonical_founded = 0
+    open_graph_founded = 0
+    URL_founded = 0
+    for path in Path(".").rglob("*"):
+        if not path.is_file() or path.suffix.lower() not in EXTENSIONS:
+            continue
+        if any(part in SKIP_DIRS for part in path.parts):
+            continue
+
+        try:
+            with open(path, encoding="utf-8", newline="") as f:
+                content = f.read()
+        except UnicodeDecodeError:
+            print(f"[SKIPPED] {path} (NOT UTF-8)")
+            continue
+
+        canonical_founded += len(re.findall(r'<link rel="canonical" href="https?://(?:www\.)?[^"]+"', content, re.IGNORECASE))
+        open_graph_founded += len(re.findall(r'<meta property="og:image" content="https?://(?:www\.)?[^"]+"', content, re.IGNORECASE))
+        URL_founded += len(re.findall(r"https?://(?:www\.)?[^\"'<>]+", content, re.IGNORECASE))
+
+    return canonical_founded, open_graph_founded, URL_founded
 
 def main():
     parser = argparse.ArgumentParser(description="This is LinkChanger for your migration to a new domain.")
     parser.add_argument("old_domain", help="example: yourname.vercel.app")
     parser.add_argument("new_domain", help="example: yourname.com")
     parser.add_argument("--folder", default=".", help="folder website (default: this folder)")
+    parser.add_argument("--scan", default=".", help="folder website (default: this folder)")
     parser.add_argument("--dry-run", action="store_true", help="show what will be changed without writing to files")
     args = parser.parse_args()
 
@@ -61,6 +84,12 @@ def main():
     if args.dry_run:
         print("Changes not written to files (dry run). Remove --dry-run to apply changes.")
 
+    if args.scan:
+        canonical_founded, open_graph_founded, URL_founded = scan_folder()
+        print(f"\nScan results:")
+        print(f"Canonical tags found: {canonical_founded}")
+        print(f"Open Graph tags found: {open_graph_founded}")
+        print(f"Total URLs found: {URL_founded}")
 
 if __name__ == "__main__":
     main()
