@@ -23,7 +23,7 @@ source=(
     "$pkgname-$pkgver.tar.gz::https://github.com/RangS-1/${_repo}/archive/refs/tags/v$pkgver.tar.gz"
 )
 
-sha256sums=('54bfc5e06f40a1a3b8191821c3e1fc129a714fc78eaa5dcc84259f898fa657ab')
+sha256sums=('e121834f9a5b29b49fbf0692dd11ce5cc5df5828cbee6608aed9138ab5faf3d2')
 
 build() {
     cd "$srcdir/${_repo}-${pkgver}"
