@@ -16,6 +16,8 @@ def scan_folder(root: Path):
     canonical_founded = 0
     open_graph_founded = 0
     URL_founded = 0
+    twitter_founded = 0
+    robots_founded = 0
     for path in root.rglob("*"):
         if not path.is_file() or path.suffix.lower() not in EXTENSIONS:
             continue
@@ -30,10 +32,12 @@ def scan_folder(root: Path):
             continue
 
         canonical_founded += len(re.findall(r'<link rel="canonical" href="https?://(?:www\.)?[^"]+"', content, re.IGNORECASE))
-        open_graph_founded += len(re.findall(r'<meta property="og:image" content="https?://(?:www\.)?[^"]+"', content, re.IGNORECASE))
+        robots_founded += len(re.findall(r"robots", content, re.IGNORECASE))
+        open_graph_founded += len(re.findall(r"og:", content, re.IGNORECASE))
         URL_founded += len(re.findall(r"http", content, re.IGNORECASE))
+        twitter_founded += len(re.findall(r"twitter", content, re.IGNORECASE))
 
-    return canonical_founded, open_graph_founded, URL_founded
+    return canonical_founded, open_graph_founded, URL_founded, twitter_founded, robots_founded
 
 def main():
     parser = argparse.ArgumentParser(description="This is LinkChanger for your migration to a new domain.")
@@ -90,11 +94,13 @@ def main():
             print("Changes not written to files (dry run). Remove --dry-run to apply changes.")
 
     if args.scan:
-        canonical_founded, open_graph_founded, URL_founded = scan_folder(root)
+        canonical_founded, open_graph_founded, URL_founded, twitter_founded, robots_founded = scan_folder(root)
         print(f"\nScan results:")
         print(f"Canonical tags found: {canonical_founded}")
+        print(f"Robots tags found: {robots_founded}")
         print(f"Open Graph tags found: {open_graph_founded}")
         print(f"Total URLs found: {URL_founded}")
+        print(f"Twitter tags found: {twitter_founded}")
 
 if __name__ == "__main__":
     main()
