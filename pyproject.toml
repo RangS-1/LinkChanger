@@ -1,0 +1,20 @@
+[project]
+name = "linkchanger"
+version = "1.0.0"
+description = "A simple tool to change old domain URLs to new domain URLs in your website files."
+authors = [
+    {name="RangS"}
+]
+
+dependencies = [
+]
+
+[project.scripts]
+linkchanger = "linkchanger.main:main"
+
+[build-system]
+requires = [
+    "setuptools>=61",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
