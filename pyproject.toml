@@ -1,6 +1,6 @@
 [project]
 name = "linkchanger"
-version = "1.0.1"
+version = "1.0.2"
 description = "A simple tool to change old domain URLs to new domain URLs in your website files."
 authors = [
     {name="RangS"}
